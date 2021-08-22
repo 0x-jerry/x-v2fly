@@ -1,1 +1,1 @@
-import './src/main.ts'
+import './cli/main.ts'
