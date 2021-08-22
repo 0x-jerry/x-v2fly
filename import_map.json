@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "x-lib/": "https://raw.githubusercontent.com/0x-jerry/x-lib/v0.1.0/",
+    "cliffy/": "https://deno.land/x/cliffy@v0.19.5/",
+    "semver/": "https://deno.land/x/semver@v1.4.0/",
+    "path/": "https://deno.land/std@0.101.0/path/",
+    "fmt/": "https://deno.land/std@0.101.0/fmt/",
+    "fs/": "https://deno.land/std@0.101.0/fs/",
+    "testing/": "https://deno.land/std@0.101.0/testing/"
+  }
+}
