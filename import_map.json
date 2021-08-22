@@ -10,6 +10,7 @@
     "ws/": "https://deno.land/std@0.101.0/ws/",
     "testing/": "https://deno.land/std@0.101.0/testing/",
     "@vue/reactivity": "https://cdn.skypack.dev/@vue/reactivity@3.2.1?dts",
-    "shared/": "./shared/"
+    "shared/": "./shared/",
+    "v2ray-schema": "https://raw.githubusercontent.com/0x-jerry/v2ray-config-json-schema/v0.2.1/v2ray-schema.ts"
   }
 }

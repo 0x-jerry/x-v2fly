@@ -5,8 +5,8 @@ import { ensureDirSync, existsSync } from 'fs/mod.ts'
 export const homeDir = homedir()
 
 export const confDir = join(homeDir, '.x-f2fly')
-export const confPath = join(confDir, 'config.json')
 ensureDirSync(confDir)
+export const confPath = join(confDir, 'config.json')
 
 export const pidPath = join(confDir, 'x-pid')
 export const processShellPath = join(confDir, 'x-shell.sh')

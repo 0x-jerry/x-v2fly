@@ -17,6 +17,8 @@ export async function handleWs(sock: WebSocket) {
   console.log('socket connected!')
 
   try {
+    const send: SocketSendMessage = (t) => sock.send(JSON.stringify(t))
+
     for await (const ev of sock) {
       if (typeof ev !== 'string') {
         continue
@@ -26,9 +28,7 @@ export async function handleWs(sock: WebSocket) {
         const json = JSON.parse(ev)
         if (!json.type) return
 
-        socketEvent.emit(json.type, json.data, (t) =>
-          sock.send(JSON.stringify(t))
-        )
+        socketEvent.emit(json.type, json.data, send)
       } catch {
         // ignore
       }
