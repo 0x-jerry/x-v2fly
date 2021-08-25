@@ -9,13 +9,14 @@
   <body>
     <script>
       const socket = new WebSocket('ws://localhost:7999')
+      let id = 0
       socket.onopen = () => {
         socket.send(
           JSON.stringify({
-            type: 'test',
-            data: {
-              hello: 'world',
-            },
+            __protocol_symbol__: true,
+            id: (id++).toString(),
+            type: 'set-v2ray-b64',
+            data: 'hello',
           })
         )
       }

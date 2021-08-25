@@ -1,6 +1,7 @@
 import { serve } from 'http/server.ts'
 import { acceptWebSocket } from 'ws/mod.ts'
 import { handleWs } from './socket.ts'
+import './v2ray.ts'
 
 export async function startWebSocketService(port = 7999) {
   console.log(`websocket server is running on :${port}`)

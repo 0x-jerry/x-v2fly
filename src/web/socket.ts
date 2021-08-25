@@ -1,9 +1,16 @@
 import { WebSocket } from 'ws/mod.ts'
-import { EventEmitter } from 'x-lib'
-import { startV2rayService, stopV2rayService } from '../v2ray/index.ts'
+import {
+  EventEmitter,
+  isProtocol,
+  Protocol,
+  createProtocolMessage,
+} from 'x-lib'
 
-type SocketSendMessage = (data: unknown) => Promise<void>
-type SocketMessageEvent<T = any> = (data: T, send: SocketSendMessage) => any
+type SocketSendMessage = (data?: unknown, type?: string) => Promise<void>
+type SocketMessageEvent<T = any> = (
+  data: Protocol,
+  send: SocketSendMessage
+) => any
 
 export const socketEvent = new EventEmitter<{
   [type: string]: SocketMessageEvent
@@ -13,20 +20,10 @@ socketEvent.on('test', (data, send) => {
   send(data)
 })
 
-socketEvent.on('start', () => {
-  startV2rayService()
-})
-
-socketEvent.on('stop', () => {
-  stopV2rayService()
-})
-
 export async function handleWs(sock: WebSocket) {
   console.log('socket connected!')
 
   try {
-    const send: SocketSendMessage = (t) => sock.send(JSON.stringify(t))
-
     for await (const ev of sock) {
       if (typeof ev !== 'string') {
         continue
@@ -34,9 +31,15 @@ export async function handleWs(sock: WebSocket) {
 
       try {
         const json = JSON.parse(ev)
-        if (!json.type) return
+        if (!isProtocol<any, string>(json)) return
 
-        socketEvent.emit(json.type, json.data, send)
+        socketEvent.emit(json.type, json, (data, type) => {
+          data = isProtocol(data)
+            ? data
+            : { ...createProtocolMessage(type || json.type, data), id: json.id }
+
+          return sock.send(JSON.stringify(data))
+        })
       } catch {
         // ignore
       }
