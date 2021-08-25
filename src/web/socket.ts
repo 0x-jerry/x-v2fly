@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws/mod.ts'
-
-import { EventEmitter } from 'x-lib/mod.ts'
+import { EventEmitter } from 'x-lib'
+import { startV2rayService, stopV2rayService } from '../v2ray/index.ts'
 
 type SocketSendMessage = (data: unknown) => Promise<void>
 type SocketMessageEvent<T = any> = (data: T, send: SocketSendMessage) => any
@@ -11,6 +11,14 @@ export const socketEvent = new EventEmitter<{
 
 socketEvent.on('test', (data, send) => {
   send(data)
+})
+
+socketEvent.on('start', () => {
+  startV2rayService()
+})
+
+socketEvent.on('stop', () => {
+  stopV2rayService()
 })
 
 export async function handleWs(sock: WebSocket) {

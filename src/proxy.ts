@@ -1,4 +1,4 @@
-import { run, runPiped } from './utils/run.ts'
+import { run, runPiped } from 'd-lib'
 
 const platform = Deno.build.os
 
@@ -29,7 +29,7 @@ export function getAllNets() {
         nets?.map((n) => n.replace(/^\(\d+\) /, '')) || []
 
       return result
-    }
+    },
   })
 }
 
@@ -39,7 +39,7 @@ export function isConnected(net: string) {
       const txt = await runPiped('networksetup', '-getinfo', net)
       const m = /^(IPv6 )?IP address: (?!none).+$/m.test(txt)
       return !!m
-    }
+    },
   })
 }
 
@@ -63,7 +63,7 @@ export async function setHttpProxy(
           await run('networksetup', '-setwebproxystate', net, 'off')
         }
       }
-    }
+    },
   })
 }
 
@@ -79,6 +79,6 @@ export async function setHttpProxyOff() {
 
         await run('networksetup', '-setwebproxystate', net, 'off')
       }
-    }
+    },
   })
 }

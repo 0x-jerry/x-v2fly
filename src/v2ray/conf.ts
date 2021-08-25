@@ -5,9 +5,9 @@ import {
   IVmessSecurity,
   IV2RayOutbound,
   IV2rayLog,
-  IV2RayInbound
+  IV2RayInbound,
 } from 'v2ray-schema'
-import { confDir } from 'shared/config.ts'
+import { confDir } from '../config.ts'
 import { join } from 'path/mod.ts'
 
 export const v2rayLogInfoPath = join(confDir, 'v2ray.info.log')
@@ -17,7 +17,7 @@ function getLogConf(): IV2rayLog {
   return {
     access: v2rayLogInfoPath,
     error: v2rayLogErrorPath,
-    loglevel: LogLevel.info
+    loglevel: LogLevel.info,
   }
 }
 
@@ -68,21 +68,21 @@ function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
     protocol: V2RayProtocol.VMESS,
     mux: {
       enabled: true,
-      concurrency: 8
+      concurrency: 8,
     },
     streamSettings: {
       wsSettings: {
         path: config.path,
         headers: {
-          host: config.host
-        }
+          host: config.host,
+        },
       },
       tlsSettings: {
         serverName: config.host,
-        allowInsecure: false
+        allowInsecure: false,
       },
       security: 'tls',
-      network: 'ws'
+      network: 'ws',
     },
     settings: {
       vnext: [
@@ -93,13 +93,13 @@ function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
             {
               alterId: config.aid,
               id: config.id,
-              security: IVmessSecurity.NONE,
-              level: 0
-            }
-          ]
-        }
-      ]
-    }
+              security: IVmessSecurity.AUTO,
+              level: 0,
+            },
+          ],
+        },
+      ],
+    },
   }
 }
 
@@ -110,8 +110,8 @@ function getHttpInbound(host: string, port: number): IV2RayInbound {
     port: port,
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http']
-    }
+      destOverride: ['tls', 'http'],
+    },
   }
 }
 
@@ -122,12 +122,12 @@ function getSocksInbound(host: string, port: number): IV2RayInbound {
     port: port,
     settings: {
       udp: true,
-      auth: 'noauth'
+      auth: 'noauth',
     },
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http']
-    }
+      destOverride: ['tls', 'http'],
+    },
   }
 }
 
@@ -150,8 +150,8 @@ export function getV2rayConfig(opt: V2rayConfigOption): IV2Ray {
     log: getLogConf(),
     inbounds: [
       getHttpInbound(opt.proxy.http.host, opt.proxy.http.port),
-      getSocksInbound(opt.proxy.socks.host, opt.proxy.socks.port)
+      getSocksInbound(opt.proxy.socks.host, opt.proxy.socks.port),
     ],
-    outbounds: [getOutboundConfFromBase64(opt.b64)]
+    outbounds: [getOutboundConfFromBase64(opt.b64)],
   }
 }

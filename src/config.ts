@@ -1,4 +1,4 @@
-import { createConfig } from 'x-lib/mod.ts'
+import { createConfig } from 'x-lib'
 import { join } from 'path/mod.ts'
 import { ensureDirSync, existsSync } from 'fs/mod.ts'
 
