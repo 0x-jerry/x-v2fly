@@ -1,15 +1,20 @@
 import { join } from 'path/mod.ts'
 import { confDir } from '../config.ts'
 import { IV2Ray } from 'v2ray-schema'
-import { run, runPiped } from 'd-lib'
+import { run, runPiped, homedir } from 'd-lib'
 
 export const v2rayConfPath = join(confDir, 'v2ray.config.json')
-export const v2rayPlistPath = join(confDir, 'v2ray.plist')
-
 const pListId = 'com.jerry.launch.v2ray'
 
+export const v2rayPlistPath = join(
+  homedir,
+  '/Library',
+  'LaunchAgents',
+  `${pListId}.plist`
+)
+
 export async function start(conf: IV2Ray) {
-  await Deno.writeTextFile(v2rayConfPath, JSON.stringify(conf))
+  await Deno.writeTextFile(v2rayConfPath, JSON.stringify(conf, null, 2))
 
   await startOnMac()
 }
