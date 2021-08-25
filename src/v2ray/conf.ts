@@ -131,7 +131,7 @@ function getSocksInbound(host: string, port: number): IV2RayInbound {
   }
 }
 
-interface V2rayConfigOption {
+export interface V2rayConfigOption {
   b64: string
   proxy: {
     http: {
