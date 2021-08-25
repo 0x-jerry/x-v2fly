@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "scripts": {
     "deno": "deno run --import-map ./import_map.json -A --unstable",
-    "dev": "deno run --import-map ./import_map.json -A --no-check --unstable x-v2fly.ts",
+    "start": "deno run --import-map ./import_map.json -A --no-check --unstable x-v2fly.ts",
+    "dev": "deno run --import-map ./import_map.json -A --no-check --unstable x-v2fly.dev.ts",
     "release": "deno run --import-map ./import_map.json -A --unstable scripts/release.ts",
     "test": "deno test --import-map ./import_map.json --allow-env --allow-read --allow-run --unstable"
   }

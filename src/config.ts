@@ -2,15 +2,13 @@ import { createConfig } from 'x-lib'
 import { join } from 'path/mod.ts'
 import { ensureDirSync, existsSync } from 'fs/mod.ts'
 import { V2rayConfigOption } from './v2ray/index.ts'
+import { homedir } from 'd-lib'
 
-export const homeDir = homedir()
+export const isDev = Deno.env.get('__X_V2FLY_DEBUG__') === '1'
 
-export const confDir = join(homeDir, '.x-f2fly')
+export const confDir = join(homedir, '.x-v2fly')
 ensureDirSync(confDir)
-export const confPath = join(confDir, 'config.json')
-
-export const pidPath = join(confDir, 'x-pid')
-export const processShellPath = join(confDir, 'x-shell.sh')
+export const confPath = join(confDir, isDev ? 'config.dev.json' : 'config.json')
 
 export const [config] = createConfig(
   () => {
@@ -45,9 +43,3 @@ export const [config] = createConfig(
     Deno.writeTextFileSync(confPath, JSON.stringify(data, null, 2))
   }
 )
-
-function homedir(): string {
-  const home = Deno.env.get('HOME') ?? Deno.env.get('USERPROFILE')
-
-  return home!
-}
