@@ -1,5 +1,9 @@
 import { Command, HelpCommand, CompletionsCommand } from 'cliffy/command/mod.ts'
-import { startWebSocketService } from './web/main.ts'
+import {
+  startAsService,
+  tryStopService,
+  startWebSocketService,
+} from './web/main.ts'
 import { startV2rayService, stopV2rayService } from './v2ray/index.ts'
 
 const x = new Command()
@@ -19,8 +23,25 @@ const x = new Command()
   })
   //
   .command('ui [port:number]', 'Start ui service, default port is 7999.')
-  .action((_, port) => {
-    startWebSocketService(port)
+  .option('--start', 'Start as daemon a service.')
+  .option('--stop', 'Start as daemon a service.')
+  .action(async (opt: { start: boolean; stop: boolean }, port) => {
+    if (opt.start) {
+      await startAsService(port)
+      return
+    }
+
+    if (opt.stop) {
+      await tryStopService()
+      return
+    }
+
+    await startWebSocketService(port)
   })
 
-await x.parse()
+try {
+  await x.parse()
+} catch (error) {
+  console.log(error)
+  Deno.exit(Deno.Signal.SIGHUP)
+}

@@ -38,10 +38,6 @@ async function startOnMac() {
         <string>-c</string>
         <string>${v2rayConfPath}</string>
       </array>
-      <key>UserName</key>
-      <string>root</string>
-      <key>GroupName</key>
-      <string>wheel</string>
     </dict>
   </plist>`
 
