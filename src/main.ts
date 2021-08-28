@@ -7,9 +7,11 @@ import {
   startWebSocketService,
 } from './web/main.ts'
 import { startV2rayService, stopV2rayService } from './v2ray/index.ts'
+import { version } from '../version.ts'
 
 const x = new Command()
   .name('x-v2fly')
+  .version(version)
   .default('help')
   .command('help', new HelpCommand())
   .command('completions', new CompletionsCommand())
