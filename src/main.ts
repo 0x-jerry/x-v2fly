@@ -1,4 +1,6 @@
 import { Command, HelpCommand, CompletionsCommand } from 'cliffy/command/mod.ts'
+import { UpgradeCommand } from 'cliffy/command/upgrade/mod.ts'
+import { GithubProvider } from 'cliffy/command/upgrade/provider/github.ts'
 import {
   startAsService,
   tryStopService,
@@ -11,6 +13,18 @@ const x = new Command()
   .default('help')
   .command('help', new HelpCommand())
   .command('completions', new CompletionsCommand())
+  //
+  .command(
+    'upgrade',
+    new UpgradeCommand({
+      main: 'x-v2fly.ts',
+      importMap: 'import_map.json',
+      args: ['-A', '--no-check', '--unstable'],
+      provider: new GithubProvider({
+        repository: '0x-jerry/x-v2fly',
+      }),
+    })
+  )
   //
   .command('start', 'Start x-v2fly service.')
   .action(async () => {
