@@ -38,9 +38,9 @@ const x = new Command()
     await stopV2rayService()
   })
   //
-  .command('ui [port:number]', 'Start ui service, default port is 7999.')
-  .option('--start', 'Start as daemon a service.')
-  .option('--stop', 'Start as daemon a service.')
+  .command('ui [port:number]', 'Start web service, default port is 7999.')
+  .option('--start', 'Start web service as a daemon.')
+  .option('--stop', 'Stop web service.')
   .action(async (opt: { start: boolean; stop: boolean }, port) => {
     if (opt.start) {
       await startAsService(port)
