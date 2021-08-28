@@ -171,7 +171,7 @@ export interface V2rayConfigOption {
 
 function getRoutingConf(): IV2rayRouting {
   return {
-    domainStrategy: IStrategy.AsIs,
+    domainStrategy: IStrategy.IPIfNonMatch,
     rules: [
       {
         type: 'field',
@@ -180,6 +180,16 @@ function getRoutingConf(): IV2rayRouting {
           'geoip:cn', // 中国大陆的 IP
           'geoip:private', // 私有地址 IP，如路由器等
         ],
+      },
+      {
+        type: 'field',
+        outboundTag: OutboundTag.DIRECT,
+        domain: ['geosite:cn'],
+      },
+      {
+        type: 'field',
+        outboundTag: OutboundTag.BLOCK,
+        domain: ['geosite:category-ads-all'],
       },
     ],
   }
