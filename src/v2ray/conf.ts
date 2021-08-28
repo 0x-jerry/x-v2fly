@@ -1,4 +1,5 @@
 import {
+  IStrategy,
   IV2Ray,
   LogLevel,
   V2RayProtocol,
@@ -6,6 +7,7 @@ import {
   IV2RayOutbound,
   IV2rayLog,
   IV2RayInbound,
+  IV2rayRouting,
 } from 'v2ray-schema'
 import { confDir } from '../config.ts'
 import { join } from 'path/mod.ts'
@@ -53,6 +55,12 @@ interface V2rayBase64 {
   id: string
 }
 
+enum OutboundTag {
+  DIRECT = 'direct',
+  PROXY = 'proxy',
+  BLOCK = 'block',
+}
+
 /**
  * Only support vmess protocol for now.
  * @param b64
@@ -64,7 +72,7 @@ function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
   const config: V2rayBase64 = JSON.parse(atob(conf))
 
   return {
-    tag: 'proxy',
+    tag: OutboundTag.PROXY,
     protocol: V2RayProtocol.VMESS,
     mux: {
       enabled: true,
@@ -100,6 +108,22 @@ function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
         },
       ],
     },
+  }
+}
+
+function getOutboundDirectConf(): IV2RayOutbound {
+  return {
+    tag: OutboundTag.DIRECT,
+    protocol: V2RayProtocol.FREEDOM,
+    settings: {},
+  }
+}
+
+function getOutboundBlockConf(): IV2RayOutbound {
+  return {
+    tag: OutboundTag.BLOCK,
+    protocol: V2RayProtocol.BLACKHOLE,
+    settings: {},
   }
 }
 
@@ -145,6 +169,22 @@ export interface V2rayConfigOption {
   }
 }
 
+function getRoutingConf(): IV2rayRouting {
+  return {
+    domainStrategy: IStrategy.AsIs,
+    rules: [
+      {
+        type: 'field',
+        outboundTag: OutboundTag.DIRECT,
+        ip: [
+          'geoip:cn', // 中国大陆的 IP
+          'geoip:private', // 私有地址 IP，如路由器等
+        ],
+      },
+    ],
+  }
+}
+
 export function getV2rayConfig(opt: V2rayConfigOption): IV2Ray {
   return {
     log: getLogConf(),
@@ -152,6 +192,11 @@ export function getV2rayConfig(opt: V2rayConfigOption): IV2Ray {
       getHttpInbound(opt.proxy.http.host, opt.proxy.http.port),
       getSocksInbound(opt.proxy.socks.host, opt.proxy.socks.port),
     ],
-    outbounds: [getOutboundConfFromBase64(opt.b64)],
+    outbounds: [
+      getOutboundConfFromBase64(opt.b64),
+      getOutboundDirectConf(),
+      getOutboundBlockConf(),
+    ],
+    routing: getRoutingConf(),
   }
 }
