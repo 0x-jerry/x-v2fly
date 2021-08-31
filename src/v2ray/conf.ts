@@ -12,14 +12,14 @@ import {
 import { confDir } from '../config.ts'
 import { join } from 'path/mod.ts'
 
-export const v2rayLogInfoPath = join(confDir, 'v2ray.info.log')
+export const v2rayLogInfoPath = join(confDir, 'v2ray.access.log')
 export const v2rayLogErrorPath = join(confDir, 'v2ray.error.log')
 
 function getLogConf(): IV2rayLog {
   return {
     access: v2rayLogInfoPath,
     error: v2rayLogErrorPath,
-    loglevel: LogLevel.info,
+    loglevel: LogLevel.warning,
   }
 }
 
@@ -66,18 +66,14 @@ enum OutboundTag {
  * @param b64
  * @returns
  */
-function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
-  const [_protocol, conf] = b64.split('://')
+function getOutboundConfFromBase64(opt: V2rayConfigOption): IV2RayOutbound {
+  const [_protocol, conf] = opt.b64.split('://')
 
   const config: V2rayBase64 = JSON.parse(atob(conf))
 
-  return {
+  const outbound: IV2RayOutbound = {
     tag: OutboundTag.PROXY,
     protocol: V2RayProtocol.VMESS,
-    mux: {
-      enabled: true,
-      concurrency: 8,
-    },
     streamSettings: {
       wsSettings: {
         path: config.path,
@@ -109,6 +105,15 @@ function getOutboundConfFromBase64(b64: string): IV2RayOutbound {
       ],
     },
   }
+
+  if (opt.mux) {
+    outbound.mux = {
+      enabled: true,
+      concurrency: 8,
+    }
+  }
+
+  return outbound
 }
 
 function getOutboundDirectConf(): IV2RayOutbound {
@@ -167,6 +172,7 @@ export interface V2rayConfigOption {
       port: number
     }
   }
+  mux: boolean
 }
 
 function getRoutingConf(): IV2rayRouting {
@@ -203,7 +209,7 @@ export function getV2rayConfig(opt: V2rayConfigOption): IV2Ray {
       getSocksInbound(opt.proxy.socks.host, opt.proxy.socks.port),
     ],
     outbounds: [
-      getOutboundConfFromBase64(opt.b64),
+      getOutboundConfFromBase64(opt),
       getOutboundDirectConf(),
       getOutboundBlockConf(),
     ],

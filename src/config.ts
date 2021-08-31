@@ -24,6 +24,7 @@ export const [config] = createConfig(
           port: 7777,
         },
       },
+      mux: false,
     }
 
     const conf = {
