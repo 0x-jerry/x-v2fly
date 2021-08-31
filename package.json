@@ -1,6 +1,6 @@
 {
   "name": "x-v2fly",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "scripts": {
     "deno": "deno run --import-map ./import_map.json -A --unstable",
     "start": "deno run --import-map ./import_map.json -A --no-check --unstable x-v2fly.ts",
