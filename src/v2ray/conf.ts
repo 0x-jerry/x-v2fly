@@ -177,7 +177,7 @@ export interface V2rayConfigOption {
 
 function getRoutingConf(): IV2rayRouting {
   return {
-    domainStrategy: IStrategy.AsIs,
+    domainStrategy: IStrategy.IPIfNonMatch,
     rules: [
       {
         type: 'field',
