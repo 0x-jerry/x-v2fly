@@ -2,7 +2,7 @@
   "imports": {
     "x-lib": "https://raw.githubusercontent.com/0x-jerry/x-lib/v0.3.0/mod.ts",
     "d-lib": "https://raw.githubusercontent.com/0x-jerry/d-lib/v0.1.3/mod.ts",
-    "v2ray-schema": "https://raw.githubusercontent.com/0x-jerry/v2ray-config-json-schema/v0.2.1/v2ray-schema.ts",
+    "v2ray-schema": "https://raw.githubusercontent.com/0x-jerry/v2ray-config-json-schema/v0.2.2/v2ray-schema.ts",
     "cliffy/": "https://deno.land/x/cliffy@v0.19.5/",
     "semver/": "https://deno.land/x/semver@v1.4.0/",
     "path/": "https://deno.land/std@0.101.0/path/",

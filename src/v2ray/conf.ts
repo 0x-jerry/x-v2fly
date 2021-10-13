@@ -178,7 +178,13 @@ export interface V2rayConfigOption {
 function getRoutingConf(): IV2rayRouting {
   return {
     domainStrategy: IStrategy.IPIfNonMatch,
+    domainMatcher: 'mph',
     rules: [
+      {
+        type: 'field',
+        domain: ['geosite:google'],
+        outboundTag: OutboundTag.PROXY,
+      },
       {
         type: 'field',
         outboundTag: OutboundTag.DIRECT,
