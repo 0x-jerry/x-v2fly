@@ -59,5 +59,6 @@ try {
   await x.parse()
 } catch (error) {
   console.log(error)
-  Deno.exit(Deno.Signal.SIGHUP)
+
+  Deno.exit(-1)
 }

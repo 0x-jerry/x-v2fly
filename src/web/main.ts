@@ -5,9 +5,14 @@ import { homedir, run, runPiped, which } from 'd-lib'
 import { join } from 'path/mod.ts'
 import './v2ray.ts'
 import { confDir } from '../config.ts'
+import { cyan } from 'fmt/colors.ts'
 
 export async function startWebSocketService(port = 7999) {
-  console.log(`websocket server is running on :${port}`)
+  console.log(
+    `websocket server is running on :${port}, ${cyan(
+      'https://0x-jerry.github.io/x-v2fly-ui/'
+    )}`
+  )
 
   for await (const req of serve(`:${port}`)) {
     const { conn, r: bufReader, w: bufWriter, headers } = req
