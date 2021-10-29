@@ -173,9 +173,12 @@ export interface V2rayConfigOption {
     }
   }
   mux: boolean
+  rules: IV2rayRouting['rules']
 }
 
-function getRoutingConf(): IV2rayRouting {
+function getRoutingConf(rules: IV2rayRouting['rules']): IV2rayRouting {
+  const extraRules = rules || []
+
   return {
     domainStrategy: IStrategy.IPIfNonMatch,
     domainMatcher: 'mph',
@@ -203,6 +206,7 @@ function getRoutingConf(): IV2rayRouting {
         outboundTag: OutboundTag.BLOCK,
         domain: ['geosite:category-ads-all'],
       },
+      ...extraRules,
     ],
   }
 }
@@ -219,6 +223,6 @@ export function getV2rayConfig(opt: V2rayConfigOption): IV2Ray {
       getOutboundDirectConf(),
       getOutboundBlockConf(),
     ],
-    routing: getRoutingConf(),
+    routing: getRoutingConf(opt.rules),
   }
 }
