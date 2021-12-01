@@ -1,54 +1,24 @@
-import { WebSocket } from 'ws/mod.ts'
-import {
-  EventEmitter,
-  isProtocol,
-  Protocol,
-  createProtocolMessage,
-} from 'x-lib'
+import { protocolServer } from './v2ray.ts'
 
-type SocketSendMessage = (data?: unknown, type?: string) => Promise<void>
-type SocketMessageEvent<T = any> = (
-  data: Protocol,
-  send: SocketSendMessage
-) => any
-
-export const socketEvent = new EventEmitter<{
-  [type: string]: SocketMessageEvent
-}>()
-
-socketEvent.on('test', (data, send) => {
-  send(data)
-})
-
-export async function handleWs(sock: WebSocket) {
+export function handleWs(socket: WebSocket) {
   console.log('socket connected!')
 
-  try {
-    for await (const ev of sock) {
-      if (typeof ev !== 'string') {
-        continue
-      }
+  socket.onmessage = (ev) => {
+    try {
+      const data = JSON.parse(ev.data)
 
-      try {
-        const json = JSON.parse(ev)
-        if (!isProtocol<any, string>(json)) return
-
-        socketEvent.emit(json.type, json, (data, type) => {
-          data = isProtocol(data)
-            ? data
-            : { ...createProtocolMessage(type || json.type, data), id: json.id }
-
-          return sock.send(JSON.stringify(data))
-        })
-      } catch {
-        // ignore
-      }
+      protocolServer.resolve({
+        ...data,
+        send(data) {
+          socket.send(JSON.stringify(data))
+        },
+      })
+    } catch (error) {
+      console.warn('resolve socket message error', error)
     }
-  } catch (err) {
-    console.error(`failed to receive frame: ${err}`)
+  }
 
-    if (!sock.isClosed) {
-      await sock.close(1000).catch(console.error)
-    }
+  socket.onclose = () => {
+    socket.close(1000)
   }
 }

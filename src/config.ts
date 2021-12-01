@@ -1,6 +1,6 @@
 import { createConfig } from 'x-lib'
 import { join } from 'path/mod.ts'
-import { ensureDirSync, existsSync } from 'fs/mod.ts'
+import { ensureDirSync } from 'fs/mod.ts'
 import { V2rayConfigOption } from './v2ray/index.ts'
 import { homedir } from 'd-lib'
 
@@ -31,14 +31,13 @@ export const [config] = createConfig(
       v2ray,
     }
 
-    if (!existsSync(confPath)) {
+    try {
+      const txt = Deno.readTextFileSync(confPath)
+      Object.assign(conf, JSON.parse(txt))
+      return conf
+    } catch (_error) {
       return conf
     }
-
-    const txt = Deno.readTextFileSync(confPath)
-    Object.assign(conf, JSON.parse(txt))
-
-    return conf
   },
   (data) => {
     Deno.writeTextFileSync(confPath, JSON.stringify(data, null, 2))

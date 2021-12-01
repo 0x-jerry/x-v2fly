@@ -173,7 +173,7 @@ export interface V2rayConfigOption {
     }
   }
   mux: boolean
-  rules: IV2rayRouting['rules']
+  rules?: IV2rayRouting['rules']
 }
 
 function getRoutingConf(rules: IV2rayRouting['rules']): IV2rayRouting {

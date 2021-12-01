@@ -1,5 +1,4 @@
 import { serve } from 'http/server.ts'
-import { acceptWebSocket } from 'ws/mod.ts'
 import { handleWs } from './socket.ts'
 import { homedir, run, runPiped, which } from 'd-lib'
 import { join } from 'path/mod.ts'
@@ -14,20 +13,17 @@ export async function startWebSocketService(port = 7999) {
     )}`
   )
 
-  for await (const req of serve(`:${port}`)) {
-    const { conn, r: bufReader, w: bufWriter, headers } = req
-    acceptWebSocket({
-      conn,
-      bufReader,
-      bufWriter,
-      headers,
-    })
-      .then(handleWs)
-      .catch(async (err) => {
-        console.error(`failed to accept websocket: ${err}`)
-        await req.respond({ status: 400 })
-      })
-  }
+  await serve(
+    (req) => {
+      const { socket, response } = Deno.upgradeWebSocket(req)
+      handleWs(socket)
+
+      return response
+    },
+    {
+      addr: '127.0.0.1:8080',
+    }
+  )
 }
 
 export async function startAsService(port = 7999) {
