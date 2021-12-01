@@ -21,7 +21,7 @@ export async function startWebSocketService(port = 7999) {
       return response
     },
     {
-      addr: '127.0.0.1:8080',
+      addr: `127.0.0.1:${port}`,
     }
   )
 }
