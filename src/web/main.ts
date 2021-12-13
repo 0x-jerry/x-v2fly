@@ -32,7 +32,7 @@ export async function startAsService(port = 7999) {
 
 const pListId = 'com.jerry.x-v2fly.ui'
 
-const plistPath = join(homedir, '/Library', 'LaunchAgents', `${pListId}.plist`)
+const plistPath = join(homedir, 'Library', 'LaunchAgents', `${pListId}.plist`)
 
 const logPath = join(confDir, 'x-ui.info.log')
 const errorPath = join(confDir, 'x-ui.error.log')

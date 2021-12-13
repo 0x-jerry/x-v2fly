@@ -28,6 +28,7 @@ export const [config] = createConfig(
     }
 
     const conf = {
+      program: 'v2ray' as 'v2ray' | 'xray',
       v2ray,
     }
 

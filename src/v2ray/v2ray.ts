@@ -1,14 +1,15 @@
 import { join } from 'path/mod.ts'
 import { confDir } from '../config.ts'
 import { IV2Ray } from 'v2ray-schema'
-import { run, runPiped, homedir } from 'd-lib'
+import { run, runPiped, homedir, which } from 'd-lib'
+import { config } from '../config.ts'
 
 export const v2rayConfPath = join(confDir, 'v2ray.config.json')
 const pListId = 'com.jerry.launch.v2ray'
 
 export const v2rayPlistPath = join(
   homedir,
-  '/Library',
+  'Library',
   'LaunchAgents',
   `${pListId}.plist`
 )
@@ -34,7 +35,7 @@ async function startOnMac() {
       <string>Background</string>
       <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/bin/v2ray</string>
+        <string>${await which(config.program)}</string>
         <string>-c</string>
         <string>${v2rayConfPath}</string>
       </array>
