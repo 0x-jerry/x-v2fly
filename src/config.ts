@@ -1,4 +1,4 @@
-import { createConfig } from 'x-lib'
+import { createConfig } from 'd-lib'
 import { join } from 'path/mod.ts'
 import { ensureDirSync } from 'fs/mod.ts'
 import { V2rayConfigOption } from './v2ray/index.ts'

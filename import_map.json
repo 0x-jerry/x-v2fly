@@ -1,16 +1,16 @@
 {
   "imports": {
-    "x-lib": "https://raw.githubusercontent.com/0x-jerry/x-lib/v0.9.11/mod.ts",
-    "d-lib": "https://raw.githubusercontent.com/0x-jerry/d-lib/v0.1.3/mod.ts",
+    "d-lib": "https://raw.githubusercontent.com/0x-jerry/d-lib/v0.2.3/mod.ts",
     "v2ray-schema": "https://raw.githubusercontent.com/0x-jerry/v2ray-config-json-schema/v0.2.2/v2ray-schema.ts",
     "cliffy/": "https://deno.land/x/cliffy@v0.20.1/",
     "semver/": "https://deno.land/x/semver@v1.4.0/",
-    "path/": "https://deno.land/std@0.117.0/path/",
-    "fmt/": "https://deno.land/std@0.117.0/fmt/",
-    "fs/": "https://deno.land/std@0.117.0/fs/",
-    "http/": "https://deno.land/std@0.117.0/http/",
-    "ws/": "https://deno.land/std@0.117.0/ws/",
-    "testing/": "https://deno.land/std@0.117.0/testing/",
-    "@vue/reactivity": "https://cdn.skypack.dev/@vue/reactivity@3.2.1?dts"
+    "path/": "https://deno.land/std@0.125.0/path/",
+    "fmt/": "https://deno.land/std@0.125.0/fmt/",
+    "fs/": "https://deno.land/std@0.125.0/fs/",
+    "http/": "https://deno.land/std@0.125.0/http/",
+    "ws/": "https://deno.land/std@0.125.0/ws/",
+    "testing/": "https://deno.land/std@0.125.0/testing/",
+    "@vue/reactivity": "https://cdn.skypack.dev/@vue/reactivity@3.2.31?dts",
+    "oak": "https://deno.land/x/oak@v10.2.1/mod.ts"
   }
 }

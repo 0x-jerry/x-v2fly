@@ -1,29 +1,18 @@
-import { serve } from 'http/server.ts'
-import { handleWs } from './socket.ts'
 import { homedir, run, runPiped, which } from 'd-lib'
 import { join } from 'path/mod.ts'
 import './v2ray.ts'
 import { confDir } from '../config.ts'
 import { cyan } from 'fmt/colors.ts'
+import { start } from './service.ts'
 
-export async function startWebSocketService(port = 7999) {
+export async function startWebService(port = 7999) {
   console.log(
-    `websocket server is running on :${port}, ${cyan(
+    `web server is running on :${port}, ${cyan(
       'https://0x-jerry.github.io/x-v2fly-ui/'
     )}`
   )
 
-  await serve(
-    (req) => {
-      const { socket, response } = Deno.upgradeWebSocket(req)
-      handleWs(socket)
-
-      return response
-    },
-    {
-      addr: `127.0.0.1:${port}`,
-    }
-  )
+  await start(port)
 }
 
 export async function startAsService(port = 7999) {

@@ -4,7 +4,7 @@ import { GithubProvider } from 'cliffy/command/upgrade/provider/github.ts'
 import {
   startAsService,
   tryStopService,
-  startWebSocketService,
+  startWebService,
 } from './web/main.ts'
 import { startV2rayService, stopV2rayService } from './v2ray/index.ts'
 import { version } from '../version.ts'
@@ -52,7 +52,7 @@ const x = new Command()
       return
     }
 
-    await startWebSocketService(port)
+    await startWebService(port)
   })
 
 try {
